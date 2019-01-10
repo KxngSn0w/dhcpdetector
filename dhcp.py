@@ -19,26 +19,21 @@ def sniff(interface):
 def process_sniffed_packet(packet):
     if DHCP in packet and packet[DHCP].options[0][1] == 3:
         MAC = packet[Ether].src
-        print(f"DHCPREQUEST detected from {MAC}")
-        print(packet.show())
-        reputation = mac_Check(MAC)
+        print("DHCPREQUEST detected from %s") % MAC
+        # print(packet.show())
+        mac_Check(MAC)
 
 
 def mac_check(MAC):
     if MAC in safe_mac:
-        print(f"MAC address {MAC} is safe.")
-        break
+        print("MAC address %s is safe.") % MAC
     else:
-        print(f"MAC address {MAC} is unknown. Initiating defense systems.")
+        print("MAC address %s is unknown. Initiating defense systems.") % MAC
         LED(MAC)
 
+	
 def LED(MAC):
-    if LED == True:
-        print("LED is already on.")
-        break
-    else:
-        LED = True
-        print(f"Unknown MAC {MAC} detected. Turning on LED")
+        print("Turning on LED")
         # Initiates LED output
         GPIO.output(17, True)
 
@@ -48,9 +43,8 @@ GPIO.setmode(GPIO.BCM)
 # Sets Pin 17 For Output
 GPIO.setup(17, GPIO.OUT)
 
-safe_mac = ("70:85:C2:54:98:4F", "40:4E:36:83:F9:C5", "90:32:4B:65:9E:51", "50:DC:E7:BE:99:7D", "98:29:A6:D0:B3:A3")
+safe_mac = ("70:85:c2:54:98:4f", "40:4e:36:83:f9:c5", "90:32:4b:65:9e:51", "50:dc:e7:be:99:7d", "98:29:a6:d0:b3:a3", "20:ab:37:74:57:54")
 
-LED = False
 
 sniff("etho0")
 
